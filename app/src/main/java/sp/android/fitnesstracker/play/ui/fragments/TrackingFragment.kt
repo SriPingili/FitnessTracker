@@ -42,6 +42,10 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
         }
     }
 
+
+    /*
+    *  mapView life cycle methods
+    * */
     override fun onResume() {
         super.onResume()
         mapView?.onResume()
