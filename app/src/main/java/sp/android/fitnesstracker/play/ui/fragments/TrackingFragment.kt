@@ -1,5 +1,6 @@
 package sp.android.fitnesstracker.play.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -8,7 +9,9 @@ import com.google.android.gms.maps.GoogleMap
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_tracking.*
 import sp.android.fitnesstracker.play.R
+import sp.android.fitnesstracker.play.services.TrackingService
 import sp.android.fitnesstracker.play.ui.viewmodels.MainViewModel
+import sp.android.fitnesstracker.play.util.Constants.ACTION_START_OR_RESUME_SERVICE
 
 @AndroidEntryPoint
 class TrackingFragment : Fragment(R.layout.fragment_tracking) {
@@ -22,8 +25,20 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
 
         mapView.onCreate(savedInstanceState)
 
+        btnToggleRun.setOnClickListener {
+
+            sendCommandToService(ACTION_START_OR_RESUME_SERVICE)
+        }
+
         mapView.getMapAsync {
             map = it
+        }
+    }
+
+    fun sendCommandToService(action: String) {
+        Intent(requireContext(), TrackingService::class.java).let {
+            it.action = action
+            requireContext().startService(it)
         }
     }
 
