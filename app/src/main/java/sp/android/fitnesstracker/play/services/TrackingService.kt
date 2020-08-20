@@ -69,6 +69,7 @@ class TrackingService : LifecycleService() {
 
             multiLinePoints.value?.apply {
                 last().add(latLong)
+                multiLinePoints.postValue(this)
             }
         }
     }
@@ -94,11 +95,13 @@ class TrackingService : LifecycleService() {
                     if (isFirstRun) {
                         startForegroundService()
                     } else {
+                        startForegroundService()
                         Timber.d("Resuming service")
                     }
 
                 }
                 ACTION_PAUSE_SERVICE -> {
+                    pauseService()
                     Timber.d("Paused service")
                 }
                 ACTION_STOP_SERVICE -> {
@@ -109,6 +112,10 @@ class TrackingService : LifecycleService() {
 
 
         return super.onStartCommand(intent, flags, startId)
+    }
+
+    private fun pauseService() {
+        isTracking.postValue(false)
     }
 
     private fun startForegroundService() {

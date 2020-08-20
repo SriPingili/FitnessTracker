@@ -1,5 +1,7 @@
 package sp.android.fitnesstracker.play.util
 
+import android.graphics.Color
+
 object Constants {
 
     const val RUNNING_DATABASE_NAME = "running_database"
@@ -16,4 +18,8 @@ object Constants {
 
     const val LOCATION_UPDATE_INTERVAL = 5000L
     const val FASTEST_LOCATION_INTERVAL = 2000L
+
+    const val POLYLINE_COLOR = Color.RED
+    const val POLYLINE_WIDTH = 8f
+    const val MAP_ZOOM = 15f
 }
