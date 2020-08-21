@@ -20,16 +20,16 @@ import sp.android.fitnesstracker.play.util.Constants.ACTION_START_OR_RESUME_SERV
 import sp.android.fitnesstracker.play.util.Constants.MAP_ZOOM
 import sp.android.fitnesstracker.play.util.Constants.POLYLINE_COLOR
 import sp.android.fitnesstracker.play.util.Constants.POLYLINE_WIDTH
+import sp.android.fitnesstracker.play.util.TrackingUtility
 
 @AndroidEntryPoint
 class TrackingFragment : Fragment(R.layout.fragment_tracking) {
 
     private val viewModel: MainViewModel by viewModels()
-
     private var isTracking = false
     private var multiPathPoints = mutableListOf<Polyline>()
-
     private var map: GoogleMap? = null
+    private var curTimeInMillis = 0L
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -54,6 +54,12 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
             multiPathPoints = it
             addLatestPolyline()
             moveCameraToUser()
+        })
+
+        TrackingService.timeRunInMilliSeconds.observe(viewLifecycleOwner, Observer {
+            curTimeInMillis = it
+            val formattedTime = TrackingUtility.getFormattedStopWatchTime(curTimeInMillis,true)
+            tvTimer.text = formattedTime
         })
     }
 
