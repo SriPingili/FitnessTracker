@@ -12,8 +12,8 @@ import com.google.android.gms.maps.model.PolylineOptions
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_tracking.*
 import sp.android.fitnesstracker.play.R
+import sp.android.fitnesstracker.play.services.Polyline
 import sp.android.fitnesstracker.play.services.TrackingService
-import sp.android.fitnesstracker.play.services.polyline
 import sp.android.fitnesstracker.play.ui.viewmodels.MainViewModel
 import sp.android.fitnesstracker.play.util.Constants.ACTION_PAUSE_SERVICE
 import sp.android.fitnesstracker.play.util.Constants.ACTION_START_OR_RESUME_SERVICE
@@ -26,28 +26,38 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
 
     private val viewModel: MainViewModel by viewModels()
 
-    private var map: GoogleMap? = null
     private var isTracking = false
-    private var multiLinePoints = mutableListOf<polyline>()
+    private var multiPathPoints = mutableListOf<Polyline>()
+
+    private var map: GoogleMap? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         mapView.onCreate(savedInstanceState)
-
         btnToggleRun.setOnClickListener {
-            toggleRunButton()
+            toggleRun()
         }
-
         mapView.getMapAsync {
             map = it
-            drawAllPolylines()
+            addAllPolylines()
         }
 
         subscribeToObservers()
     }
 
-    private fun toggleRunButton() {
+    private fun subscribeToObservers() {
+        TrackingService.isTracking.observe(viewLifecycleOwner, Observer {
+            updateTracking(it)
+        })
+
+        TrackingService.multiPathPoints.observe(viewLifecycleOwner, Observer {
+            multiPathPoints = it
+            addLatestPolyline()
+            moveCameraToUser()
+        })
+    }
+
+    private fun toggleRun() {
         if (isTracking) {
             sendCommandToService(ACTION_PAUSE_SERVICE)
         } else {
@@ -57,80 +67,55 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
 
     private fun updateTracking(isTracking: Boolean) {
         this.isTracking = isTracking
-        if (isTracking) {
-            btnToggleRun.text = "Stop"
-            btnFinishRun.visibility = View.GONE
-        } else {
+        if (!isTracking) {
             btnToggleRun.text = "Start"
             btnFinishRun.visibility = View.VISIBLE
-        }
-
-    }
-
-    fun sendCommandToService(action: String) {
-        Intent(requireContext(), TrackingService::class.java).let {
-            it.action = action
-            requireContext().startService(it)
+        } else {
+            btnToggleRun.text = "Stop"
+            btnFinishRun.visibility = View.GONE
         }
     }
-
-    fun subscribeToObservers() {
-
-        TrackingService.isTracking.observe(viewLifecycleOwner, Observer {
-            updateTracking(it)
-        })
-
-        TrackingService.multiLinePoints.observe(viewLifecycleOwner, Observer {
-            this.multiLinePoints = it
-            drawLatestPolyline()
-            moveCameraToUser()
-        })
-    }
-
 
     private fun moveCameraToUser() {
-        if (multiLinePoints.isNotEmpty() && multiLinePoints.last().isNotEmpty()) {
+        if (multiPathPoints.isNotEmpty() && multiPathPoints.last().isNotEmpty()) {
             map?.animateCamera(
                 CameraUpdateFactory.newLatLngZoom(
-                    multiLinePoints.last().last(),
+                    multiPathPoints.last().last(),
                     MAP_ZOOM
                 )
             )
         }
     }
 
-    private fun drawAllPolylines() {
-        for (polyLine in multiLinePoints) {
-            val polylineOptions = PolylineOptions().apply {
-                color(POLYLINE_COLOR)
-                width(POLYLINE_WIDTH)
-                addAll(polyLine)
-            }
+    private fun addAllPolylines() {
+        for (polyline in multiPathPoints) {
+            val polylineOptions = PolylineOptions()
+                .color(POLYLINE_COLOR)
+                .width(POLYLINE_WIDTH)
+                .addAll(polyline)
             map?.addPolyline(polylineOptions)
         }
     }
 
-
-    private fun drawLatestPolyline() {
-        if (multiLinePoints.isNotEmpty() && multiLinePoints.last().size > 1) {
-            val preLastLatLng = multiLinePoints.last()[multiLinePoints.last().size - 2]
-            val lastLang = multiLinePoints.last().last()
-
-            val polylineOptions = PolylineOptions().apply {
-                color(POLYLINE_COLOR)
-                width(POLYLINE_WIDTH)
-                add(preLastLatLng)
-                add(lastLang)
-            }
-
+    private fun addLatestPolyline() {
+        if (multiPathPoints.isNotEmpty() && multiPathPoints.last().size > 1) {
+            val preLastLatLng = multiPathPoints.last()[multiPathPoints.last().size - 2]
+            val lastLatLng = multiPathPoints.last().last()
+            val polylineOptions = PolylineOptions()
+                .color(POLYLINE_COLOR)
+                .width(POLYLINE_WIDTH)
+                .add(preLastLatLng)
+                .add(lastLatLng)
             map?.addPolyline(polylineOptions)
         }
     }
 
+    private fun sendCommandToService(action: String) =
+        Intent(requireContext(), TrackingService::class.java).also {
+            it.action = action
+            requireContext().startService(it)
+        }
 
-    /*
-    *  mapView life cycle methods
-    * */
     override fun onResume() {
         super.onResume()
         mapView?.onResume()
@@ -160,7 +145,4 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
         super.onSaveInstanceState(outState)
         mapView?.onSaveInstanceState(outState)
     }
-
-    //looks like onDestroy() might not be needed, mapview gets
-    // destroyed before??
 }
