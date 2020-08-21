@@ -66,6 +66,7 @@ class TrackingService : LifecycleService() {
     private var timeRun = 0L
     private var timeStarted = 0L
     private var lastSecondTimestamp = 0L
+    var serviceKilled = false
 
     companion object {
         val isTracking = MutableLiveData<Boolean>()
@@ -83,11 +84,25 @@ class TrackingService : LifecycleService() {
     override fun onCreate() {
         super.onCreate()
         curNotificationBuilder = baseNotificationBuilder
+        /*
+        Q: Why do we need both curNotificationBuilder and baseNotificationBuilder?
+        They are the same objects, aren't they? I didn't get that moment. Please explain
+
+        Sol: At first they are the same, but to update the notification we need to post a new notification with updated values.
+        Since the values from the base notification builder will always be the same for every notification,
+        we leave that and instead use the curNotificationBuilder to only add the values we want to add at that moment
+
+        Q: can't we simply use the same instance and instead of assigning it to currNotificationBuilder, add an action to it before using?
+        Sol: I tried that out and it added several actions everytime. Maybe I'm missing something here, but for me it didn't work
+        * */
+
         postInitialValues()
 
         isTracking.observe(this, Observer {
-            updateLocationTracking(it)
-            updateNotificationTrackingState(it)
+            if (!serviceKilled) {
+                updateLocationTracking(it)
+                updateNotificationTrackingState(it)
+            }
         })
     }
 
@@ -109,6 +124,7 @@ class TrackingService : LifecycleService() {
                 }
                 ACTION_STOP_SERVICE -> {
                     Timber.d("Stopped service")
+                    killService()
                 }
             }
         }
@@ -183,14 +199,14 @@ class TrackingService : LifecycleService() {
         startForeground(NOTIFICATION_ID, baseNotificationBuilder.build())
 
         timeRunInSeconds.observe(this, Observer {
-
-            val notification = curNotificationBuilder
-                .setContentText(TrackingUtility.getFormattedStopWatchTime(it * 1000L))
-            notificationManager.notify(NOTIFICATION_ID, notification.build())
-
+            if (!serviceKilled) {
+                val notification = curNotificationBuilder
+                    .setContentText(TrackingUtility.getFormattedStopWatchTime(it * 1000L))
+                notificationManager.notify(NOTIFICATION_ID, notification.build())
+            }
         })
     }
-    
+
     //for state pause or resume
     private fun updateNotificationTrackingState(isTracking: Boolean) {
         val notificationActionText = if (isTracking) "Pause" else "Resume"
@@ -215,14 +231,16 @@ class TrackingService : LifecycleService() {
             set(curNotificationBuilder, ArrayList<NotificationCompat.Action>())
         }
 
-        curNotificationBuilder = baseNotificationBuilder
-            .addAction(
-                R.drawable.ic_pause_black_24dp,
-                notificationActionText,
-                pendingIntent
-            )
+        if (!serviceKilled) {
+            curNotificationBuilder = baseNotificationBuilder
+                .addAction(
+                    R.drawable.ic_pause_black_24dp,
+                    notificationActionText,
+                    pendingIntent
+                )
 
-        notificationManager.notify(NOTIFICATION_ID, curNotificationBuilder.build())
+            notificationManager.notify(NOTIFICATION_ID, curNotificationBuilder.build())
+        }
 
     }
 
@@ -257,5 +275,14 @@ class TrackingService : LifecycleService() {
             }
             timeRun += lapTime
         }
+    }
+
+    private fun killService() {
+        serviceKilled = true
+        isFirstRun = true
+        pauseService()
+        postInitialValues()
+        stopForeground(true)
+        stopSelf()
     }
 }
