@@ -29,6 +29,7 @@ import sp.android.fitnesstracker.play.util.Constants.POLYLINE_WIDTH
 import sp.android.fitnesstracker.play.util.TrackingUtility
 import java.lang.Math.round
 import java.util.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class TrackingFragment : Fragment(R.layout.fragment_tracking) {
@@ -39,6 +40,14 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
     private var map: GoogleMap? = null
     private var curTimeInMillis = 0L
     private var menu: Menu? = null
+    /*
+    Q:  we provide one method for return boolean variable and get a variable @set:Inject.
+    how to get multiple boolean or string or float inject method? name parameter? or other?
+
+    Sol:If you provide several objects of the same type, you use the @Named annotation above the function and the place
+    where you Inject it
+    * */
+    @set:Inject
     private var weight = 80f
 
     override fun onCreateView(
