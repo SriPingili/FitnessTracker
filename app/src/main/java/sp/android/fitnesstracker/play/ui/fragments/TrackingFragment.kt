@@ -31,6 +31,8 @@ import java.lang.Math.round
 import java.util.*
 import javax.inject.Inject
 
+const val CANCEL_DIALOG_TAG = "CancelDialog"
+
 @AndroidEntryPoint
 class TrackingFragment : Fragment(R.layout.fragment_tracking) {
 
@@ -40,6 +42,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
     private var map: GoogleMap? = null
     private var curTimeInMillis = 0L
     private var menu: Menu? = null
+
     /*
     Q:  we provide one method for return boolean variable and get a variable @set:Inject.
     how to get multiple boolean or string or float inject method? name parameter? or other?
@@ -74,6 +77,14 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
             addAllPolylines()
         }
 
+        // restore dialog instance
+        if(savedInstanceState != null) {
+            val cancelRunDialog = parentFragmentManager.findFragmentByTag(CANCEL_DIALOG_TAG) as CancelRunDialog?
+            cancelRunDialog?.setYesListener {
+                stopRun()
+            }
+        }
+
         subscribeToObservers()
     }
 
@@ -106,10 +117,10 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
 
     private fun updateTracking(isTracking: Boolean) {
         this.isTracking = isTracking
-        if (!isTracking) {
+        if (!isTracking && curTimeInMillis > 0L) {
             btnToggleRun.text = "Start"
             btnFinishRun.visibility = View.VISIBLE
-        } else {
+        } else if (isTracking) {
             menu?.getItem(0)?.isVisible = true
             btnToggleRun.text = "Stop"
             btnFinishRun.visibility = View.GONE
@@ -183,18 +194,11 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
 
 
     private fun showCancelTrackingDialog() {
-        val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
-            .setTitle("Cancel the Run?")
-            .setMessage("Are you sure that you want to cancel the current run and delete its data?")
-            .setIcon(R.drawable.ic_delete)
-            .setPositiveButton("Yes") { _, _ ->
+        CancelRunDialog().apply {
+            setYesListener {
                 stopRun()
             }
-            .setNegativeButton("No") { dialogInterface, _ ->
-                dialogInterface.cancel()
-            }
-            .create()
-        dialog.show()
+        }.show(parentFragmentManager, CANCEL_DIALOG_TAG)
     }
 
     private fun zoomToWholeTrack() {
@@ -240,6 +244,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
     }
 
     private fun stopRun() {
+        tvTimer.text = "00:00:00:00"
         sendCommandToService(ACTION_STOP_SERVICE)
         findNavController().navigate(R.id.action_trackingFragment_to_runFragment)
     }
