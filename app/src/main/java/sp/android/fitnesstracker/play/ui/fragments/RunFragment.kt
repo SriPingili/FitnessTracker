@@ -6,12 +6,15 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_run.*
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import sp.android.fitnesstracker.play.R
+import sp.android.fitnesstracker.play.adapters.RunAdapter
 import sp.android.fitnesstracker.play.ui.viewmodels.MainViewModel
 import sp.android.fitnesstracker.play.util.Constants.REQUEST_CODE_LOCATION_PERMISSION
 import sp.android.fitnesstracker.play.util.TrackingUtility
@@ -20,15 +23,28 @@ import sp.android.fitnesstracker.play.util.TrackingUtility
 class RunFragment : Fragment(R.layout.fragment_run), EasyPermissions.PermissionCallbacks {
 
     private val viewModel: MainViewModel by viewModels()
+    lateinit var runAdapter: RunAdapter
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupRecyclerView()
 
         fab.setOnClickListener {
             findNavController().navigate(R.id.action_runFragment_to_trackingFragment)
         }
 
+        viewModel.runsSortedByDate().observe(viewLifecycleOwner, Observer {
+            runAdapter.submitList(it)
+        })
+
         requestPermissions()
+    }
+
+    private fun setupRecyclerView() = rvRuns.apply {
+        runAdapter = RunAdapter()
+        adapter = runAdapter
+        layoutManager = LinearLayoutManager(activity)
     }
 
     fun requestPermissions() {
