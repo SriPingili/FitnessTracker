@@ -66,17 +66,17 @@ object TrackingUtility {
 
     fun getBMIMessage(bmi: Float): String {
         return if (bmi <= 18.5) {
-            "Your BMI is equal to or less than 18.5 (Underweight)\n\nFor more info visit https://www.bmi-calculator.net"
+            "Your BMI is equal to or less than 18.5 (Underweight)\n(source: https://www.bmi-calculator.net)"
         } else if (bmi > 18.5 && bmi <= 24.99) {
-            "Your BMI is between 18.5 and 24.9 (Normal Weight)\n\nFor more info visit https://www.bmi-calculator.net"
+            "Your BMI is between 18.5-24.9 (Normal Weight)\n(source: https://www.bmi-calculator.net)"
         } else if (bmi >= 25 && bmi <= 29.99) {
-            "Your BMI is between 25 and 29.9 (Overweight)\n\nFor more info visit https://www.bmi-calculator.net"
+            "Your BMI is between 25 - 29.9 (Overweight)\n(source: https://www.bmi-calculator.net)"
         } else if (bmi >= 30 && bmi <= 34.99) {
-            "Your BMI is between 30-34.99 (Obese Class 1)\n\nFor more info visit https://www.bmi-calculator.net"
+            "Your BMI is between 30 - 34.99 (Obese Class 1)\n(source: https://www.bmi-calculator.net)"
         } else if (bmi >= 35 && bmi <= 39.99) {
-            "Your BMI is between 35-39.99 (Obese Class 2)\n\nFor more info visit https://www.bmi-calculator.net"
+            "Your BMI is between 35 - 39.99 (Obese Class 2)\n(source: https://www.bmi-calculator.net)"
         } else {
-            "Your BMI is over 40 (Obese Class 3 : Morbid Obesity)\n\nFor more info visit https://www.bmi-calculator.net"
+            "Your BMI is over 40 (Obese Class 3 : Morbid Obesity)\n(source: https://www.bmi-calculator.net)"
         }
     }
 }

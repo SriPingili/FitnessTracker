@@ -46,7 +46,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     private fun loadFieldsFromSharedPref() {
         val name = sharedPref.getString(KEY_NAME, "")
-        val weight = sharedPref.getFloat(KEY_WEIGHT, 80f)
+        val weight = sharedPref.getFloat(KEY_WEIGHT, 175f)
         nameInputId.setText(name)
         weightInputId.setText(weight.toString())
     }

@@ -9,12 +9,8 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_bmr.*
-import kotlinx.android.synthetic.main.fragment_bmr.ageInputId
-import kotlinx.android.synthetic.main.fragment_bmr.weightInputId
-import kotlinx.android.synthetic.main.fragment_settings.*
 import sp.android.fitnesstracker.play.R
 import sp.android.fitnesstracker.play.util.ActivityLevelConstant
-import sp.android.fitnesstracker.play.util.Constants.KEY_ACTIVITY_LEVEL_INDEX
 import sp.android.fitnesstracker.play.util.Constants.KEY_AGE
 import sp.android.fitnesstracker.play.util.Constants.KEY_GENDER
 import sp.android.fitnesstracker.play.util.Constants.KEY_HEIGHT
@@ -168,8 +164,15 @@ class BMRFragment : Fragment(R.layout.fragment_bmr) {
 
         if (bmr > 0f) {
             viewBMRResultId.visibility = View.VISIBLE
-
-            viewBMRResultId.setText("Dear $name,\n\nYour BMR = ${bmr.toInt()}\n(calories a day needed to keep your body functioning at rest)\n\nCalories needed = ${calories.toInt()}\n(calories a day to maintain body weight)\n\nFor more infor visit https://www.seacoastonline.com/article/20070412/ENTERTAIN/704120346")
+            viewBMRResultId.setText(
+                String.format(
+                    getString(R.string.bmr_result),
+                    name,
+                    bmr.toInt(),
+                    calories.toInt()
+                )
+            )
+//            viewBMRResultId.setText("Dear $name,\n\nYour BMR is ${bmr.toInt()} (calories a day needed to keep your body functioning at rest)\n\nCalories needed are ${calories.toInt()} (calories a day to maintain body weight)")
         }
 
         scrollViewId.post(Runnable {

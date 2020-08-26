@@ -22,4 +22,6 @@
 
     <string name="male" translatable="false">MALE</string>
     <string name="female" translatable="false">FEMALE</string>
+
+    <string name="bmr_result">Dear %s,\n\nYour BMR is %s (calories a day needed to keep your body functioning at rest)\n\nCalories needed are %s (calories a day to maintain body weight)</string>
 </resources>
