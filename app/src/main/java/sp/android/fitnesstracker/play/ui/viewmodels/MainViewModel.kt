@@ -8,7 +8,6 @@ import kotlinx.coroutines.launch
 import sp.android.fitnesstracker.play.db.Run
 import sp.android.fitnesstracker.play.repositories.MainRepository
 import sp.android.fitnesstracker.play.util.SortType.SortType
-import timber.log.Timber
 
 class MainViewModel @ViewModelInject constructor(
     val repository: MainRepository
@@ -29,7 +28,6 @@ class MainViewModel @ViewModelInject constructor(
      */
     init {
         runs.addSource(runsSortedByDate) { result ->
-            Timber.d("RUNS SORTED BY DATE")
             if (sortType == SortType.DATE) {
                 result?.let { runs.value = it }
             }

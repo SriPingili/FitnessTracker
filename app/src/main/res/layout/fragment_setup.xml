@@ -5,12 +5,11 @@
     android:layout_height="match_parent">
 
     <TextView
-
         android:id="@+id/welcomeTextView"
         style="@style/TextAppearance.AppCompat.Large"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="@dimen/margin_8dp"
         android:text="@string/welcome_message"
         android:textAlignment="center"
         android:textColor="@android:color/black"
@@ -38,7 +37,7 @@
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
+            android:ems="@integer/ems_width"
             android:hint="@string/your_name_hint"
             android:inputType="textPersonName"
             android:textColor="@android:color/black" />
@@ -49,7 +48,7 @@
         android:id="@+id/weightInputLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/margin_16dp"
         android:textColorHint="@android:color/black"
         app:hintTextColor="@android:color/black"
         app:layout_constraintStart_toStartOf="@+id/nameInputLayout"
@@ -60,7 +59,7 @@
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
+            android:ems="@integer/ems_width"
             android:hint="@string/your_weight_in_pounds_hint"
             android:inputType="numberDecimal"
             android:textColor="@android:color/black" />
@@ -70,9 +69,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="@dimen/continue_layout_height"
         android:background="@color/md_blue_A400"
-        android:padding="8dp"
+        android:padding="@dimen/padding_8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -83,7 +82,7 @@
             style="@style/TextAppearance.AppCompat.Large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="@dimen/margin_16dp"
             android:text="@string/continue_text"
             android:textColor="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"

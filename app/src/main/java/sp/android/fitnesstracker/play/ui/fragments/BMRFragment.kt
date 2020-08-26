@@ -27,15 +27,12 @@ class BMRFragment : Fragment(R.layout.fragment_bmr) {
 
     @Inject
     lateinit var sharedPref: SharedPreferences
-
     lateinit var radioButton: RadioButton
-
+    lateinit var activityLevelConstantEnum: ActivityLevelConstant
     var age: Int = 0
     var height: Float = 0f
     var weight: Float = 0f
     var gender: String = ""
-    lateinit var activityLevelConstantEnum: ActivityLevelConstant
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -49,15 +46,6 @@ class BMRFragment : Fragment(R.layout.fragment_bmr) {
             Toast.makeText(requireContext(), "${radioButton.tag}", Toast.LENGTH_SHORT).show()
         }
 
-//        activityLevelId.setOnClickListener(View.OnClickListener {
-//            ActivityLevelChooserDialog().apply {
-//                setActivityLevelListener {
-//                    setActivityLevelEnum(it)
-//                    displayToast(it)
-//                }
-//            }.show(parentFragmentManager, BMR_FRAGMENT_TAG)
-//        })
-
         activityLevelId.setOnClickListener {
             ActivityLevelChooserDialog().apply {
                 setActivityLevelListener {
@@ -66,7 +54,6 @@ class BMRFragment : Fragment(R.layout.fragment_bmr) {
                 }
             }.show(parentFragmentManager, BMR_FRAGMENT_TAG)
         }
-
 
         calculateButtonId.setOnClickListener({
             calculateBMR()
@@ -84,7 +71,7 @@ class BMRFragment : Fragment(R.layout.fragment_bmr) {
         } else {
             Snackbar.make(
                 requireView(),
-                "Please fill out all the fields",
+                getString(R.string.please_enter_all_fields),
                 Snackbar.LENGTH_SHORT
             ).show()
         }
@@ -172,7 +159,6 @@ class BMRFragment : Fragment(R.layout.fragment_bmr) {
                     calories.toInt()
                 )
             )
-//            viewBMRResultId.setText("Dear $name,\n\nYour BMR is ${bmr.toInt()} (calories a day needed to keep your body functioning at rest)\n\nCalories needed are ${calories.toInt()} (calories a day to maintain body weight)")
         }
 
         scrollViewId.post(Runnable {

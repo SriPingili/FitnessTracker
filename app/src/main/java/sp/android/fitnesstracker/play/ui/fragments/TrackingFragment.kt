@@ -11,7 +11,6 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.PolylineOptions
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_tracking.*
@@ -41,7 +40,6 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
     private var map: GoogleMap? = null
     private var curTimeInMillis = 0L
     private var menu: Menu? = null
-    private var POLYLINE_COLOR = context?.getColor(R.color.md_blue_900)
 
     /*
     Q:  we provide one method for return boolean variable and get a variable @set:Inject.
@@ -65,7 +63,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mapView.onCreate(savedInstanceState)
-        btnToggleRun.setOnClickListener {
+        toggleRunButton.setOnClickListener {
             toggleRun()
         }
         btnFinishRun.setOnClickListener {
@@ -103,7 +101,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
         TrackingService.timeRunInMilliSeconds.observe(viewLifecycleOwner, Observer {
             curTimeInMillis = it
             val formattedTime = TrackingUtility.getFormattedStopWatchTime(curTimeInMillis, true)
-            tvTimer.text = formattedTime
+            textViewTimer.text = formattedTime
         })
     }
 
@@ -119,11 +117,11 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
     private fun updateTracking(isTracking: Boolean) {
         this.isTracking = isTracking
         if (!isTracking && curTimeInMillis > 0L) {
-            btnToggleRun.text = "Start"
+            toggleRunButton.text = getString(R.string.start)
             btnFinishRun.visibility = View.VISIBLE
         } else if (isTracking) {
             menu?.getItem(0)?.isVisible = true
-            btnToggleRun.text = "Stop"
+            toggleRunButton.text = getString(R.string.stop)
             btnFinishRun.visibility = View.GONE
         }
     }
@@ -236,7 +234,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
             viewModel.insertRun(run)
             Snackbar.make(
                 requireActivity().findViewById(R.id.rootView),
-                "Run saved successfully.",
+                getString(R.string.run_save_success),
                 Snackbar.LENGTH_LONG
             ).show()
 
@@ -245,7 +243,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
     }
 
     private fun stopRun() {
-        tvTimer.text = "00:00:00:00"
+        textViewTimer.text = getString(R.string.init_timer_with_millis)
         sendCommandToService(ACTION_STOP_SERVICE)
         findNavController().navigate(R.id.action_trackingFragment_to_runFragment)
     }

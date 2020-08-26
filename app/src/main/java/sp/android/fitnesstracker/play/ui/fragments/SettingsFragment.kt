@@ -30,14 +30,18 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         super.onViewCreated(view, savedInstanceState)
         loadFieldsFromSharedPref()
 
-        btnApplyChanges.setOnClickListener {
+        applyChangesButton.setOnClickListener {
             val success = applyChangesToSharedPref()
             if (success) {
-                Snackbar.make(requireView(), "Saved changes", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(
+                    requireView(),
+                    getString(R.string.changes_applied_successfully),
+                    Snackbar.LENGTH_SHORT
+                ).show()
             } else {
                 Snackbar.make(
                     requireView(),
-                    "Please fill out all the fields",
+                    getString(R.string.please_enter_all_fields),
                     Snackbar.LENGTH_SHORT
                 ).show()
             }
@@ -47,12 +51,12 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private fun loadFieldsFromSharedPref() {
         val name = sharedPref.getString(KEY_NAME, "")
         val weight = sharedPref.getFloat(KEY_WEIGHT, 175f)
-        nameInputId.setText(name)
+        nameInputTextView.setText(name)
         weightInputEditText.setText(weight.toString())
     }
 
     private fun applyChangesToSharedPref(): Boolean {
-        val nameText = nameInputId.text.toString()
+        val nameText = nameInputTextView.text.toString()
         val weightText = weightInputEditText.text.toString()
         if (nameText.isEmpty() || weightText.isEmpty()) {
             return false
