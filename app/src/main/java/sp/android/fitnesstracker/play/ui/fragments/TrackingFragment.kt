@@ -51,7 +51,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
     where you Inject it
     * */
     @set:Inject
-    private var weight = 80f
+    private var weight = 175f
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -78,8 +78,9 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
         }
 
         // restore dialog instance
-        if(savedInstanceState != null) {
-            val cancelRunDialog = parentFragmentManager.findFragmentByTag(CANCEL_DIALOG_TAG) as CancelRunDialog?
+        if (savedInstanceState != null) {
+            val cancelRunDialog =
+                parentFragmentManager.findFragmentByTag(CANCEL_DIALOG_TAG) as CancelRunDialog?
             cancelRunDialog?.setYesListener {
                 stopRun()
             }
@@ -229,7 +230,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
             val avgSpeed =
                 round((distanceInMeters / 1000f) / (curTimeInMillis / 1000f / 60 / 60) * 10) / 10f
             val timestamp = Calendar.getInstance().timeInMillis
-            val caloriesBurned = ((distanceInMeters / 1000f) * weight).toInt()
+            val caloriesBurned = ((distanceInMeters / 1000f) * (weight * 0.453592)).toInt()
             val run =
                 Run(bmp, timestamp, avgSpeed, distanceInMeters, curTimeInMillis, caloriesBurned)
             viewModel.insertRun(run)

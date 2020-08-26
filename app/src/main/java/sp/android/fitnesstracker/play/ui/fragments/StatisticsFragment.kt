@@ -99,7 +99,7 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
                 val lineData = BarData(bardataSet)
                 barChart.data = lineData
                 val marker = CustomMarkerView(
-                    it.reversed(),
+                    it,
                     requireContext(),
                     R.layout.marker_view
                 )

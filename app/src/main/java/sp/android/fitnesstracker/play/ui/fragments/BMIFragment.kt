@@ -8,11 +8,18 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_bmi.*
 import kotlinx.android.synthetic.main.fragment_bmr.*
+import kotlinx.android.synthetic.main.fragment_bmr.calculateButtonId
+import kotlinx.android.synthetic.main.fragment_bmr.heightInputId
+import kotlinx.android.synthetic.main.fragment_bmr.scrollViewId
+import kotlinx.android.synthetic.main.fragment_bmr.viewBMRResultId
+import kotlinx.android.synthetic.main.fragment_bmr.weightInputId
 import sp.android.fitnesstracker.play.R
 import sp.android.fitnesstracker.play.util.ActivityLevelConstant
 import sp.android.fitnesstracker.play.util.Constants
 import sp.android.fitnesstracker.play.util.TrackingUtility
+import java.lang.Math.round
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -83,9 +90,9 @@ class BMIFragment : Fragment(R.layout.fragment_bmi) {
             .putFloat(Constants.KEY_HEIGHT, height)
             .apply()
 
-        var bmi = (weight / (height * height)) * 703
+//        var bmi = (weight / (height * height)) * 703
 
-        //var bmi = round(((weight / (height * height)) * 703) *100)/100f
+        var bmi = round(((weight / (height * height)) * 703) *100)/100f
 
 
 
@@ -93,7 +100,7 @@ class BMIFragment : Fragment(R.layout.fragment_bmi) {
         viewBMRResultId.visibility = View.VISIBLE
 
         viewBMRResultId.setText(
-            "Dear $name,\n\nYou have a BMI of ${bmi}\n${TrackingUtility.getBMIMessage(
+            "Dear $name,\n\nYou have a BMI of ${bmi}.\n\n${TrackingUtility.getBMIMessage(
                 bmi
             )}"
         )

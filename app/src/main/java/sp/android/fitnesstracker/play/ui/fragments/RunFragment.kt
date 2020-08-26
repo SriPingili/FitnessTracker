@@ -11,7 +11,6 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_run.*
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
@@ -21,7 +20,6 @@ import sp.android.fitnesstracker.play.ui.viewmodels.MainViewModel
 import sp.android.fitnesstracker.play.util.Constants.REQUEST_CODE_LOCATION_PERMISSION
 import sp.android.fitnesstracker.play.util.SortType.SortType
 import sp.android.fitnesstracker.play.util.TrackingUtility
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class RunFragment : Fragment(R.layout.fragment_run), EasyPermissions.PermissionCallbacks {
@@ -47,6 +45,19 @@ class RunFragment : Fragment(R.layout.fragment_run), EasyPermissions.PermissionC
             SortType.CALORIES_BURNED -> spFilter.setSelection(4)
         }
         viewModel.runs.observe(viewLifecycleOwner, Observer { runs ->
+            if (runs.isEmpty()) {
+                noRunsMessageId.visibility = View.VISIBLE
+                spFilter.visibility = View.INVISIBLE
+                tvFilterBy.visibility = View.INVISIBLE
+                rvRuns.visibility = View.INVISIBLE
+            } else {
+                noRunsMessageId.visibility = View.INVISIBLE
+                spFilter.visibility = View.VISIBLE
+                tvFilterBy.visibility = View.VISIBLE
+                rvRuns.visibility = View.VISIBLE
+            }
+
+
             runAdapter.submitList(runs)
         })
 
