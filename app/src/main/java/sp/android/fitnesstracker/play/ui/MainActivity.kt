@@ -2,6 +2,8 @@ package sp.android.fitnesstracker.play.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
@@ -30,11 +32,25 @@ class MainActivity : AppCompatActivity() {
         navHostFragmentId.findNavController()
             .addOnDestinationChangedListener { _, destination, _ ->
                 when (destination.id) {
-                    R.id.settingsFragment, R.id.runFragment, R.id.statisticsFragment -> bottomNavigationView.visibility =
+                    R.id.runFragment, R.id.statisticsFragment, R.id.BMRFragment, R.id.BMIFragment -> bottomNavigationView.visibility =
                         View.VISIBLE
                     else -> bottomNavigationView.visibility = View.GONE
                 }
             }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.settingsFragment) {
+            navHostFragmentId.findNavController().navigate(R.id.action_global_settingsFragment)
+            return true
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onNewIntent(intent: Intent?) {

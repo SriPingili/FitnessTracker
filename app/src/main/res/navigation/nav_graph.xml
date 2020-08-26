@@ -9,6 +9,11 @@
         app:destination="@id/trackingFragment"
         app:launchSingleTop="true" />
 
+    <action
+        android:id="@+id/action_global_settingsFragment"
+        app:destination="@id/settingsFragment"
+        app:launchSingleTop="true" />
+
     <fragment
         android:id="@+id/runFragment"
         android:name="sp.android.fitnesstracker.play.ui.fragments.RunFragment"
@@ -20,7 +25,11 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="sp.android.fitnesstracker.play.ui.fragments.SettingsFragment"
-        android:label="SettingsFragment" />
+        android:label="SettingsFragment" >
+        <action
+            android:id="@+id/action_settingsFragment_to_runFragment"
+            app:destination="@id/runFragment" />
+    </fragment>
     <fragment
         android:id="@+id/setupFragment"
         android:name="sp.android.fitnesstracker.play.ui.fragments.SetupFragment"
@@ -41,4 +50,12 @@
             android:id="@+id/action_trackingFragment_to_runFragment"
             app:destination="@id/runFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/BMRFragment"
+        android:name="sp.android.fitnesstracker.play.ui.fragments.BMRFragment"
+        android:label="BMRFragment" />
+    <fragment
+        android:id="@+id/BMIFragment"
+        android:name="sp.android.fitnesstracker.play.ui.fragments.BMIFragment"
+        android:label="BMIFragment" />
 </navigation>

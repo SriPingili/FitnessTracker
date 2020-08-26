@@ -4,7 +4,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
@@ -12,7 +11,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_setup.*
 import sp.android.fitnesstracker.play.R
-import sp.android.fitnesstracker.play.ui.viewmodels.MainViewModel
 import sp.android.fitnesstracker.play.util.Constants.KEY_FIRST_TIME_TOGGLE
 import sp.android.fitnesstracker.play.util.Constants.KEY_NAME
 import sp.android.fitnesstracker.play.util.Constants.KEY_WEIGHT
@@ -57,8 +55,8 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
     }
 
     private fun writePersonalDataToSharedPref(): Boolean {
-        val name = etName.text.toString()
-        val weightText = etWeight.text.toString()
+        val name = ageInputId.text.toString()
+        val weightText = weightInputId.text.toString()
         if (name.isEmpty() || weightText.isEmpty()) {
             return false
         }

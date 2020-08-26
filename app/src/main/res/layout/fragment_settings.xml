@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etName"
+            android:id="@+id/nameInputId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -36,7 +36,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline3">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etWeight"
+            android:id="@+id/weightInputId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
