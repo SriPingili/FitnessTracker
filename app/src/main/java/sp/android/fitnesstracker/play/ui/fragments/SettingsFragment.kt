@@ -48,12 +48,12 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         val name = sharedPref.getString(KEY_NAME, "")
         val weight = sharedPref.getFloat(KEY_WEIGHT, 175f)
         nameInputId.setText(name)
-        weightInputId.setText(weight.toString())
+        weightInputEditText.setText(weight.toString())
     }
 
     private fun applyChangesToSharedPref(): Boolean {
         val nameText = nameInputId.text.toString()
-        val weightText = weightInputId.text.toString()
+        val weightText = weightInputEditText.text.toString()
         if (nameText.isEmpty() || weightText.isEmpty()) {
             return false
         }

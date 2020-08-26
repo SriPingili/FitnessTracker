@@ -3,20 +3,15 @@ package sp.android.fitnesstracker.play.ui.fragments
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
-import android.widget.RadioButton
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_bmi.*
-import kotlinx.android.synthetic.main.fragment_bmr.*
 import kotlinx.android.synthetic.main.fragment_bmr.calculateButtonId
 import kotlinx.android.synthetic.main.fragment_bmr.heightInputId
 import kotlinx.android.synthetic.main.fragment_bmr.scrollViewId
 import kotlinx.android.synthetic.main.fragment_bmr.viewBMRResultId
-import kotlinx.android.synthetic.main.fragment_bmr.weightInputId
+import kotlinx.android.synthetic.main.fragment_bmr.weightInputEditText
 import sp.android.fitnesstracker.play.R
-import sp.android.fitnesstracker.play.util.ActivityLevelConstant
 import sp.android.fitnesstracker.play.util.Constants
 import sp.android.fitnesstracker.play.util.TrackingUtility
 import java.lang.Math.round
@@ -69,12 +64,12 @@ class BMIFragment : Fragment(R.layout.fragment_bmi) {
         weight = sharedPref.getFloat(Constants.KEY_WEIGHT, 0f)
         height = sharedPref.getFloat(Constants.KEY_HEIGHT, 0f)
 
-        if (weight > 0f) weightInputId.setText(weight.toString())
+        if (weight > 0f) weightInputEditText.setText(weight.toString())
         if (height > 0f) heightInputId.setText(height.toString())
     }
 
     private fun applyChangesToSharedPref(): Boolean {
-        val weightText = weightInputId.text.toString()
+        val weightText = weightInputEditText.text.toString()
         val heightText = heightInputId.text.toString()
 
 

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:id="@+id/scrollViewId"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,12 +12,13 @@
 
         <TextView
             android:id="@+id/textView"
-            android:layout_margin="8dp"
+            style="@style/TextAppearance.AppCompat.Small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:autoSizeTextType="uniform"
-            style="@style/TextAppearance.AppCompat.Small"
+            android:layout_margin="8dp"
             android:text="Basal Metabolic Rate is the number of calories required to keep your body functioning at rest. BMR is also known as your body’s metabolism; therefore, any increase to your metabolic weight, such as exercise, will increase your BMR."
+            android:textColor="@android:color/black"
+            app:autoSizeTextType="uniform"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -31,6 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="Calculate your BMR"
+            android:textColor="@android:color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.428"
             app:layout_constraintStart_toStartOf="parent"
@@ -41,18 +42,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
+            android:textColorHint="@android:color/black"
+            app:hintTextColor="@android:color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/ageInputId"
+                android:id="@+id/ageInputEditText"
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="16"
                 android:hint="Your Age"
-                android:inputType="number" />
+                android:inputType="number"
+                android:textColor="@android:color/black" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -61,18 +65,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:textColorHint="@android:color/black"
+            app:hintTextColor="@android:color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ageID">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/weightInputId"
+                android:id="@+id/weightInputEditText"
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="16"
                 android:hint="Your weight in pounds"
-                android:inputType="numberDecimal" />
+                android:inputType="numberDecimal"
+                android:textColor="@android:color/black" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -81,6 +88,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:textColorHint="@android:color/black"
+            app:hintTextColor="@android:color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/weightID">
@@ -92,7 +101,8 @@
                 android:layout_height="wrap_content"
                 android:ems="16"
                 android:hint="Your height in inches"
-                android:inputType="numberDecimal" />
+                android:inputType="numberDecimal"
+                android:textColor="@android:color/black" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,7 +124,9 @@
                 android:layout_gravity="left"
                 android:checked="false"
                 android:tag="@string/male"
-                android:text="@string/male" />
+                android:text="@string/male"
+                android:buttonTint="@color/colorAccent"
+                android:textColor="@android:color/black" />
 
             <RadioButton
                 android:id="@+id/femaleRadioButtonId"
@@ -124,7 +136,9 @@
                 android:layout_marginLeft="8dp"
                 android:checked="false"
                 android:tag="@string/female"
-                android:text="@string/female" />
+                android:text="@string/female"
+                android:buttonTint="@color/colorAccent"
+                android:textColor="@android:color/black" />
 
 
         </RadioGroup>
@@ -136,6 +150,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/choose_activity"
+            android:textColor="@android:color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/radioGroupId" />
@@ -146,6 +161,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="calculate"
+            android:textColor="@android:color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/activityLevelId" />
@@ -155,13 +171,14 @@
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_marginLeft="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="32dp"
-            app:autoSizeTextType="uniform"
             android:text="Your BMR score is 2385 calories"
+            android:textColor="@android:color/black"
             android:visibility="invisible"
+            app:autoSizeTextType="uniform"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

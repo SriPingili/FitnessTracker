@@ -24,7 +24,6 @@ import sp.android.fitnesstracker.play.util.Constants.ACTION_PAUSE_SERVICE
 import sp.android.fitnesstracker.play.util.Constants.ACTION_START_OR_RESUME_SERVICE
 import sp.android.fitnesstracker.play.util.Constants.ACTION_STOP_SERVICE
 import sp.android.fitnesstracker.play.util.Constants.MAP_ZOOM
-import sp.android.fitnesstracker.play.util.Constants.POLYLINE_COLOR
 import sp.android.fitnesstracker.play.util.Constants.POLYLINE_WIDTH
 import sp.android.fitnesstracker.play.util.TrackingUtility
 import java.lang.Math.round
@@ -42,6 +41,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
     private var map: GoogleMap? = null
     private var curTimeInMillis = 0L
     private var menu: Menu? = null
+    private var POLYLINE_COLOR = context?.getColor(R.color.md_blue_900)
 
     /*
     Q:  we provide one method for return boolean variable and get a variable @set:Inject.
@@ -142,7 +142,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
     private fun addAllPolylines() {
         for (polyline in multiPathPoints) {
             val polylineOptions = PolylineOptions()
-                .color(POLYLINE_COLOR)
+                .color(requireContext().getColor(R.color.md_blue_900))
                 .width(POLYLINE_WIDTH)
                 .addAll(polyline)
             map?.addPolyline(polylineOptions)
@@ -154,7 +154,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
             val preLastLatLng = multiPathPoints.last()[multiPathPoints.last().size - 2]
             val lastLatLng = multiPathPoints.last().last()
             val polylineOptions = PolylineOptions()
-                .color(POLYLINE_COLOR)
+                .color(requireContext().getColor(R.color.md_blue_900))
                 .width(POLYLINE_WIDTH)
                 .add(preLastLatLng)
                 .add(lastLatLng)

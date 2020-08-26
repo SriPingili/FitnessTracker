@@ -24,4 +24,8 @@
     <string name="female" translatable="false">FEMALE</string>
 
     <string name="bmr_result">Dear %s,\n\nYour BMR is %s (calories a day needed to keep your body functioning at rest)\n\nCalories needed are %s (calories a day to maintain body weight)</string>
+    <string name="welcome_message">Welcome!\n\nPlease enter your name and weight to continue.</string>
+    <string name="your_name_hint">Your name</string>
+    <string name="your_weight_in_pounds_hint">Your weight in pounds</string>
+    <string name="continue_text">Continue</string>
 </resources>

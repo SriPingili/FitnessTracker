@@ -13,12 +13,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:popupTheme="@style/Theme.PopupOverlay.Menu"
+            android:theme="@style/AppTheme">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvToolbarTitle"
@@ -26,9 +29,9 @@
                 android:layout_height="match_parent"
                 android:text="@string/app_name"
                 android:textSize="28sp"
-                android:textStyle="bold"
+
                 android:gravity="center_vertical"
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -63,6 +66,7 @@
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="56dp"
+        android:background="@color/md_blue_A400"
         app:menu="@menu/bottom_nav_menu"
         app:itemIconTint="@drawable/bottom_nav_selector"
         app:itemTextColor="@drawable/bottom_nav_selector"
