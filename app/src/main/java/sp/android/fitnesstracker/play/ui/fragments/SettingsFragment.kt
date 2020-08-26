@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
@@ -46,13 +47,13 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private fun loadFieldsFromSharedPref() {
         val name = sharedPref.getString(KEY_NAME, "")
         val weight = sharedPref.getFloat(KEY_WEIGHT, 80f)
-        etName.setText(name)
-        etWeight.setText(weight.toString())
+        nameInputId.setText(name)
+        weightInputId.setText(weight.toString())
     }
 
     private fun applyChangesToSharedPref(): Boolean {
-        val nameText = etName.text.toString()
-        val weightText = etWeight.text.toString()
+        val nameText = nameInputId.text.toString()
+        val weightText = weightInputId.text.toString()
         if (nameText.isEmpty() || weightText.isEmpty()) {
             return false
         }
@@ -62,6 +63,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             .apply()
         val toolbarText = "Let's go, $nameText!"
         requireActivity().tvToolbarTitle.text = toolbarText
+        findNavController().navigate(R.id.action_settingsFragment_to_runFragment)
         return true
     }
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RunningApp</string>
+    <string name="app_name">Fitness Tracker</string>
     <string-array name="filter_options">
         <item>Date</item>
         <item>Running Time</item>
@@ -8,4 +8,18 @@
         <item>Calories Burned</item>
     </string-array>
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">ENTER YOUR API KEY HERE</string>
+
+    <string-array name="actvity_level_choice">
+        <item>Sedentary - Little/no exercise</item>
+        <item>Lightly active - Light exercise/sports 1-3 days/week</item>
+        <item>Moderately active - Moderate exercise/sports 3-5 days/wk)</item>
+        <item>Very active - Hard exercise/sports 6-7 days a week</item>
+        <item>Extra active - Very active &amp; physical job)</item>
+    </string-array>
+
+    <string name="choose_activity"><u>click here to choose your activity level</u></string>
+
+
+    <string name="male" translatable="false">MALE</string>
+    <string name="female" translatable="false">FEMALE</string>
 </resources>
