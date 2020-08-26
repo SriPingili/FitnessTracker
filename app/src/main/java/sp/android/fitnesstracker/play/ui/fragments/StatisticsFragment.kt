@@ -93,10 +93,19 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
 
                 val bardataSet = BarDataSet(allAvgSpeeds, "Avg Speed over Time")
                 bardataSet.apply {
-                    valueTextColor = Color.WHITE
+                    valueTextColor = ContextCompat.getColor(requireContext(), android.R.color.black)
                     color = ContextCompat.getColor(requireContext(), R.color.colorAccent)
                 }
                 val lineData = BarData(bardataSet)
+                barChart.xAxis.textColor =requireContext().getColor(android.R.color.black)
+                barChart.xAxis.axisLineColor =requireContext().getColor(android.R.color.black)
+                barChart.axisLeft.textColor=requireContext().getColor(android.R.color.black)
+                barChart.axisLeft.axisLineColor=requireContext().getColor(android.R.color.black)
+                barChart.axisRight.textColor=requireContext().getColor(android.R.color.black)
+                barChart.axisRight.axisLineColor=requireContext().getColor(android.R.color.black)
+
+
+
                 barChart.data = lineData
                 val marker = CustomMarkerView(
                     it,

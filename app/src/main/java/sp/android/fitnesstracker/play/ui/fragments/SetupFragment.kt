@@ -43,7 +43,7 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
             )
         }
 
-        tvContinue.setOnClickListener {
+        continueTextView.setOnClickListener {
             val success = writePersonalDataToSharedPref()
             if (success) {
                 findNavController().navigate(R.id.action_setupFragment_to_runFragment)
@@ -55,8 +55,8 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
     }
 
     private fun writePersonalDataToSharedPref(): Boolean {
-        val name = ageInputId.text.toString()
-        val weightText = weightInputId.text.toString()
+        val name = ageInputEditText.text.toString()
+        val weightText = weightInputEditText.text.toString()
         if (name.isEmpty() || weightText.isEmpty()) {
             return false
         }

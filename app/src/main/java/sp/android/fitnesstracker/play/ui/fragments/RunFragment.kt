@@ -1,10 +1,13 @@
 package sp.android.fitnesstracker.play.ui.fragments
 
 import android.Manifest
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -21,6 +24,7 @@ import sp.android.fitnesstracker.play.util.Constants.REQUEST_CODE_LOCATION_PERMI
 import sp.android.fitnesstracker.play.util.SortType.SortType
 import sp.android.fitnesstracker.play.util.TrackingUtility
 
+
 @AndroidEntryPoint
 class RunFragment : Fragment(R.layout.fragment_run), EasyPermissions.PermissionCallbacks {
 
@@ -31,6 +35,12 @@ class RunFragment : Fragment(R.layout.fragment_run), EasyPermissions.PermissionC
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
 
+        val adapter: ArrayAdapter<*> = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.filter_options, R.layout.spinner_item
+        )
+
+        spFilter.setAdapter(adapter)
 
 
         fab.setOnClickListener {

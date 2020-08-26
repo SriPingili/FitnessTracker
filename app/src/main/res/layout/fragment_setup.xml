@@ -6,14 +6,15 @@
 
     <TextView
 
-        android:id="@+id/tvWelcome"
+        android:id="@+id/welcomeTextView"
         style="@style/TextAppearance.AppCompat.Large"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="8dp"
-        android:text="Welcome!\n\nPlease enter your name and weight to continue."
+        android:text="@string/welcome_message"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/tilName"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toTopOf="@+id/nameInputLayout"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -21,9 +22,11 @@
         app:layout_constraintVertical_bias="0.645" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilName"
+        android:id="@+id/nameInputLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColorHint="@android:color/black"
+        app:hintTextColor="@android:color/black"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -31,32 +34,36 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/ageInputId"
+            android:id="@+id/ageInputEditText"
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Your name"
-            android:inputType="textPersonName" />
+            android:hint="@string/your_name_hint"
+            android:inputType="textPersonName"
+            android:textColor="@android:color/black" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilWeight"
+        android:id="@+id/weightInputLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="@+id/tilName"
-        app:layout_constraintTop_toBottomOf="@+id/tilName">
+        android:textColorHint="@android:color/black"
+        app:hintTextColor="@android:color/black"
+        app:layout_constraintStart_toStartOf="@+id/nameInputLayout"
+        app:layout_constraintTop_toBottomOf="@+id/nameInputLayout">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/weightInputId"
+            android:id="@+id/weightInputEditText"
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Your weight in pounds"
-            android:inputType="numberDecimal" />
+            android:hint="@string/your_weight_in_pounds_hint"
+            android:inputType="numberDecimal"
+            android:textColor="@android:color/black" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -64,7 +71,7 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/md_blue_900"
+        android:background="@color/md_blue_A400"
         android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -72,12 +79,12 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/tvContinue"
+            android:id="@+id/continueTextView"
             style="@style/TextAppearance.AppCompat.Large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:text="Continue"
+            android:text="@string/continue_text"
             android:textColor="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

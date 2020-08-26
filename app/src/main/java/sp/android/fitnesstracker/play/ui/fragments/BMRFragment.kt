@@ -114,8 +114,8 @@ class BMRFragment : Fragment(R.layout.fragment_bmr) {
         gender = sharedPref.getString(KEY_GENDER, "").toString()
         setActivityLevelEnum(index)
 
-        if (age > 0) ageInputId.setText(age.toString())
-        if (weight > 0f) weightInputId.setText(weight.toString())
+        if (age > 0) ageInputEditText.setText(age.toString())
+        if (weight > 0f) weightInputEditText.setText(weight.toString())
         if (height > 0f) heightInputId.setText(height.toString())
         when (gender) {
             getString(R.string.male) -> radioGroupId.check(R.id.maleRadioButtonId)
@@ -129,8 +129,8 @@ class BMRFragment : Fragment(R.layout.fragment_bmr) {
     }
 
     private fun applyChangesToSharedPref(): Boolean {
-        val ageText = ageInputId.text.toString()
-        val weightText = weightInputId.text.toString()
+        val ageText = ageInputEditText.text.toString()
+        val weightText = weightInputEditText.text.toString()
         val heightText = heightInputId.text.toString()
 
 
