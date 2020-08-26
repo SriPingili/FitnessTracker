@@ -3,20 +3,20 @@
     <item
         android:id="@+id/runFragment"
         android:icon="@drawable/ic_run"
-        android:title="Your Runs" />
+        android:title="@string/your_runs" />
 
     <item
         android:id="@+id/BMRFragment"
         android:icon="@drawable/ic_bmr"
-        android:title="Your BMR" />
+        android:title="@string/your_bmr" />
 
     <item
         android:id="@+id/BMIFragment"
         android:icon="@drawable/ic_weight"
-        android:title="Your BMI" />
+        android:title="@string/your_bmi" />
 
     <item
         android:id="@+id/statisticsFragment"
         android:icon="@drawable/ic_graph"
-        android:title="Statistics" />/>
+        android:title="@string/statistics" />/>
 </menu>

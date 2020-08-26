@@ -1,13 +1,11 @@
 package sp.android.fitnesstracker.play.ui.fragments
 
 import android.Manifest
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -59,12 +57,12 @@ class RunFragment : Fragment(R.layout.fragment_run), EasyPermissions.PermissionC
                 noRunsMessageId.visibility = View.VISIBLE
                 spFilter.visibility = View.INVISIBLE
                 tvFilterBy.visibility = View.INVISIBLE
-                rvRuns.visibility = View.INVISIBLE
+                recyclerViewRuns.visibility = View.INVISIBLE
             } else {
                 noRunsMessageId.visibility = View.INVISIBLE
                 spFilter.visibility = View.VISIBLE
                 tvFilterBy.visibility = View.VISIBLE
-                rvRuns.visibility = View.VISIBLE
+                recyclerViewRuns.visibility = View.VISIBLE
             }
 
 
@@ -93,7 +91,7 @@ class RunFragment : Fragment(R.layout.fragment_run), EasyPermissions.PermissionC
         requestPermissions()
     }
 
-    private fun setupRecyclerView() = rvRuns.apply {
+    private fun setupRecyclerView() = recyclerViewRuns.apply {
         runAdapter = RunAdapter()
         adapter = runAdapter
         layoutManager = LinearLayoutManager(activity)
@@ -108,7 +106,7 @@ class RunFragment : Fragment(R.layout.fragment_run), EasyPermissions.PermissionC
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             EasyPermissions.requestPermissions(
                 this,
-                "You need to accept location permissions to use this app.",
+                getString(R.string.accept_locations),
                 REQUEST_CODE_LOCATION_PERMISSION,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -116,7 +114,7 @@ class RunFragment : Fragment(R.layout.fragment_run), EasyPermissions.PermissionC
         } else {
             EasyPermissions.requestPermissions(
                 this,
-                "You need to accept location permissions to use this app.",
+                getString(R.string.accept_locations),
                 REQUEST_CODE_LOCATION_PERMISSION,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION,

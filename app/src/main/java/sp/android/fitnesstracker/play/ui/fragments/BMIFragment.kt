@@ -6,11 +6,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_bmr.calculateButtonId
-import kotlinx.android.synthetic.main.fragment_bmr.heightInputId
-import kotlinx.android.synthetic.main.fragment_bmr.scrollViewId
-import kotlinx.android.synthetic.main.fragment_bmr.viewBMRResultId
-import kotlinx.android.synthetic.main.fragment_bmr.weightInputEditText
+import kotlinx.android.synthetic.main.fragment_bmr.*
 import sp.android.fitnesstracker.play.R
 import sp.android.fitnesstracker.play.util.Constants
 import sp.android.fitnesstracker.play.util.TrackingUtility
@@ -27,36 +23,24 @@ class BMIFragment : Fragment(R.layout.fragment_bmi) {
     var height: Float = 0f
     var weight: Float = 0f
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         loadFieldsFromSharedPref()
 
-
-
-
         calculateButtonId.setOnClickListener({
             calculateBMR()
         })
-
-
     }
 
     private fun calculateBMR() {
-        val success = applyChangesToSharedPref()
-
-        if (success) {
-
-
-        } else {
+        if (!applyChangesToSharedPref()) {
             Snackbar.make(
                 requireView(),
-                "Please fill out all the fields",
+                getString(R.string.please_enter_all_fields),
                 Snackbar.LENGTH_SHORT
             ).show()
         }
-
     }
 
 
@@ -72,28 +56,18 @@ class BMIFragment : Fragment(R.layout.fragment_bmi) {
         val weightText = weightInputEditText.text.toString()
         val heightText = heightInputId.text.toString()
 
-
         if (weightText.isEmpty() || heightText.isEmpty()) {
             return false
         }
 
         val weight = weightText.toFloat()
         val height = heightText.toFloat()
-
-
         sharedPref.edit()
             .putFloat(Constants.KEY_HEIGHT, height)
             .apply()
 
-//        var bmi = (weight / (height * height)) * 703
-
-        var bmi = round(((weight / (height * height)) * 703) *100)/100f
-
-
-
-
+        var bmi = round(((weight / (height * height)) * 703) * 100) / 100f
         viewBMRResultId.visibility = View.VISIBLE
-
         viewBMRResultId.setText(
             "Dear $name,\n\nYou have a BMI of ${bmi}.\n\n${TrackingUtility.getBMIMessage(
                 bmi

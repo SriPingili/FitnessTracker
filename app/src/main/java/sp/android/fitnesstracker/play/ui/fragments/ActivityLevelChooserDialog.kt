@@ -9,7 +9,6 @@ import sp.android.fitnesstracker.play.R
 
 
 class ActivityLevelChooserDialog : DialogFragment() {
-
     companion object {
         var position: Int = 0
     }
@@ -31,15 +30,14 @@ class ActivityLevelChooserDialog : DialogFragment() {
         val list = context?.resources?.getStringArray(R.array.actvity_level_choice)
 
         return MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
-            .setTitle("Choose your Activity Level")
+            .setTitle(getString(R.string.choose_activity_level))
             .setSingleChoiceItems(list, position, listener)
-            .setPositiveButton("OK") { _, _ ->
+            .setPositiveButton(getString(android.R.string.ok)) { _, _ ->
                 activityLevelListener?.let { yes ->
                     yes(position)
                 }
-
             }
-            .setNegativeButton("CANCEL") { dialogInterface, _ ->
+            .setNegativeButton(android.R.string.cancel) { dialogInterface, _ ->
                 dialogInterface.cancel()
             }
             .create()
