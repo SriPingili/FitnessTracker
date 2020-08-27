@@ -169,7 +169,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.toolbar_menu_tracking, menu)
+        inflater.inflate(R.menu.menu, menu)
         this.menu = menu
     }
 
