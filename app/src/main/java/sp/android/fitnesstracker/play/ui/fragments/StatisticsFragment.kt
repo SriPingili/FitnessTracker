@@ -19,9 +19,12 @@ import sp.android.fitnesstracker.play.ui.viewmodels.StatisticsViewModel
 import sp.android.fitnesstracker.play.util.TrackingUtility
 import java.lang.Math.round
 
+/*
+* Fragment responsible for displaying the total stats to the user. It also includes a bar chart
+* on Average speed over time.
+* */
 @AndroidEntryPoint
 class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
-
     private val viewModel: StatisticsViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -60,7 +63,8 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
             it?.let {
                 val km = it / 1000f
                 val totalDistance = round(km * 10) / 10f
-                val totalDistanceString = "${totalDistance} km"
+                val totalDistanceString =
+                    String.format(getString(R.string.total_distance), totalDistance)
                 tvTotalDistance.text = totalDistanceString
             }
         })
@@ -75,37 +79,37 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         viewModel.totalAvgSpeed.observe(viewLifecycleOwner, Observer {
             it?.let {
                 val roundedAvgSpeed = round(it * 10f) / 10f
-                val totalAvgSpeed = "${roundedAvgSpeed} km/h"
+                val totalAvgSpeed =
+                    String.format(getString(R.string.total_avg_speed), roundedAvgSpeed)
                 tvAverageSpeed.text = totalAvgSpeed
             }
         })
 
         viewModel.totalCaloriesBurned.observe(viewLifecycleOwner, Observer {
             it?.let {
-                val totalCaloriesBurned = "${it} kcal"
+                val totalCaloriesBurned = String.format(getString(R.string.total_calories), it)
                 tvTotalCalories.text = totalCaloriesBurned
             }
         })
 
         viewModel.runsSortedByDate.observe(viewLifecycleOwner, Observer {
             it?.let {
-                val allAvgSpeeds = it.indices.map { i -> BarEntry(i.toFloat(), it[i].avgSpeedInKMH) }
+                val allAvgSpeeds =
+                    it.indices.map { i -> BarEntry(i.toFloat(), it[i].avgSpeedInKMH) }
 
-                val bardataSet = BarDataSet(allAvgSpeeds, getString(R.string.avg_speed_over_time_label))
+                val bardataSet =
+                    BarDataSet(allAvgSpeeds, getString(R.string.avg_speed_over_time_label))
                 bardataSet.apply {
                     valueTextColor = ContextCompat.getColor(requireContext(), android.R.color.black)
                     color = ContextCompat.getColor(requireContext(), R.color.colorAccent)
                 }
                 val lineData = BarData(bardataSet)
-                barChart.xAxis.textColor =requireContext().getColor(android.R.color.black)
-                barChart.xAxis.axisLineColor =requireContext().getColor(android.R.color.black)
-                barChart.axisLeft.textColor=requireContext().getColor(android.R.color.black)
-                barChart.axisLeft.axisLineColor=requireContext().getColor(android.R.color.black)
-                barChart.axisRight.textColor=requireContext().getColor(android.R.color.black)
-                barChart.axisRight.axisLineColor=requireContext().getColor(android.R.color.black)
-
-
-
+                barChart.xAxis.textColor = requireContext().getColor(android.R.color.black)
+                barChart.xAxis.axisLineColor = requireContext().getColor(android.R.color.black)
+                barChart.axisLeft.textColor = requireContext().getColor(android.R.color.black)
+                barChart.axisLeft.axisLineColor = requireContext().getColor(android.R.color.black)
+                barChart.axisRight.textColor = requireContext().getColor(android.R.color.black)
+                barChart.axisRight.axisLineColor = requireContext().getColor(android.R.color.black)
                 barChart.data = lineData
                 val marker = CustomMarkerView(
                     it,

@@ -26,6 +26,9 @@ class RunAdapter : RecyclerView.Adapter<RunAdapter.RunViewHolder>() {
         }
     }
 
+    /*
+    * ListDiffer to efficiently deal with changes in the RecyclerView
+    * */
     val differ = AsyncListDiffer(this, diffCallback)
 
     inner class RunViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

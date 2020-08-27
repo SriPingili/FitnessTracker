@@ -10,7 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_run.*
 import pub.devrel.easypermissions.AppSettingsDialog
@@ -19,27 +22,28 @@ import sp.android.fitnesstracker.play.R
 import sp.android.fitnesstracker.play.adapters.RunAdapter
 import sp.android.fitnesstracker.play.ui.viewmodels.MainViewModel
 import sp.android.fitnesstracker.play.util.Constants.REQUEST_CODE_LOCATION_PERMISSION
-import sp.android.fitnesstracker.play.util.SortType.SortType
+import sp.android.fitnesstracker.play.util.SortType
 import sp.android.fitnesstracker.play.util.TrackingUtility
 
-
+/*
+* Fragment responsible for displaying all the runs ran by the user. This Fragment also lets the users to sort
+* the runs.
+*/
 @AndroidEntryPoint
 class RunFragment : Fragment(R.layout.fragment_run), EasyPermissions.PermissionCallbacks {
-
     private val viewModel: MainViewModel by viewModels()
     lateinit var runAdapter: RunAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
-
+        requestPermissions()
+        //setup spinner
         val adapter: ArrayAdapter<*> = ArrayAdapter.createFromResource(
             requireContext(),
             R.array.filter_options, R.layout.spinner_item
         )
-
         spFilter.setAdapter(adapter)
-
 
         fab.setOnClickListener {
             findNavController().navigate(R.id.action_runFragment_to_trackingFragment)
@@ -52,6 +56,7 @@ class RunFragment : Fragment(R.layout.fragment_run), EasyPermissions.PermissionC
             SortType.AVG_SPEED -> spFilter.setSelection(3)
             SortType.CALORIES_BURNED -> spFilter.setSelection(4)
         }
+
         viewModel.runs.observe(viewLifecycleOwner, Observer { runs ->
             if (runs.isEmpty()) {
                 noRunsMessageId.visibility = View.VISIBLE
@@ -64,7 +69,6 @@ class RunFragment : Fragment(R.layout.fragment_run), EasyPermissions.PermissionC
                 tvFilterBy.visibility = View.VISIBLE
                 recyclerViewRuns.visibility = View.VISIBLE
             }
-
 
             runAdapter.submitList(runs)
         })
@@ -87,18 +91,50 @@ class RunFragment : Fragment(R.layout.fragment_run), EasyPermissions.PermissionC
                 }
             }
         }
-
-        requestPermissions()
     }
 
+    /**
+     * Handles swipe-to-delete
+     */
+    private val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
+        ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+    ) {
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+            return true
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            val position = viewHolder.layoutPosition
+            val run = runAdapter.differ.currentList[position]
+            viewModel.deleteRun(run)
+            Snackbar.make(requireView(), getString(R.string.success_delete), Snackbar.LENGTH_LONG)
+                .apply {
+                    setAction(getString(R.string.undo)) {
+                        viewModel.insertRun(run)
+                    }
+                    show()
+                }
+        }
+    }
+
+    /*
+    * sets up recycler view
+    */
     private fun setupRecyclerView() = recyclerViewRuns.apply {
         runAdapter = RunAdapter()
         adapter = runAdapter
         layoutManager = LinearLayoutManager(activity)
+        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(this)
     }
 
-    fun requestPermissions() {
-
+    /*
+    Requests permissions using EasyPermissions library
+    * */
+    private fun requestPermissions() {
         if (TrackingUtility.hasLocationPermissions(requireContext())) {
             return
         }
@@ -132,8 +168,8 @@ class RunFragment : Fragment(R.layout.fragment_run), EasyPermissions.PermissionC
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
+        /*do nothing*/
     }
-
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -141,7 +177,6 @@ class RunFragment : Fragment(R.layout.fragment_run), EasyPermissions.PermissionC
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
     }
 }

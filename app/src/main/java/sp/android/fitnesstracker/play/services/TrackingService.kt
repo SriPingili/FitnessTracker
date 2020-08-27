@@ -47,18 +47,21 @@ typealias Polylines = MutableList<Polyline>
 
 @AndroidEntryPoint
 class TrackingService : LifecycleService() {
-
-    var isFirstRun = true
-
     @Inject
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
+    /**
+     * Base notification builder that contains the settings every notification will have
+     */
     @Inject
     lateinit var baseNotificationBuilder: NotificationCompat.Builder
+
+    /**
+     * Builder of the current notification
+     */
     lateinit var curNotificationBuilder: NotificationCompat.Builder
-
-
     private val timeRunInSeconds = MutableLiveData<Long>()
+    private var isFirstRun = true
 
     //timer variables
     private var isTimerEnabled = false
@@ -66,7 +69,7 @@ class TrackingService : LifecycleService() {
     private var timeRun = 0L
     private var timeStarted = 0L
     private var lastSecondTimestamp = 0L
-    var serviceKilled = false
+    private var serviceKilled = false
 
     companion object {
         val isTracking = MutableLiveData<Boolean>()
@@ -114,16 +117,13 @@ class TrackingService : LifecycleService() {
                         startForegroundService()
                         isFirstRun = false
                     } else {
-                        Timber.d("Resuming service...")
                         startTimer()
                     }
                 }
                 ACTION_PAUSE_SERVICE -> {
-                    Timber.d("Paused service")
                     pauseService()
                 }
                 ACTION_STOP_SERVICE -> {
-                    Timber.d("Stopped service")
                     killService()
                 }
             }
@@ -131,11 +131,17 @@ class TrackingService : LifecycleService() {
         return super.onStartCommand(intent, flags, startId)
     }
 
+    /**
+     * Disables the timer and tracking.
+     */
     private fun pauseService() {
         isTracking.postValue(false)
         isTimerEnabled = false
     }
 
+    /**
+     * Enables or disables location tracking according to the tracking state.
+     */
     @SuppressLint("MissingPermission")
     private fun updateLocationTracking(isTracking: Boolean) {
         if (isTracking) {
@@ -156,6 +162,9 @@ class TrackingService : LifecycleService() {
         }
     }
 
+    /**
+     * Location Callback that receives location updates and adds them to pathPoints.
+     */
     val locationCallback = object : LocationCallback() {
         override fun onLocationResult(result: LocationResult?) {
             super.onLocationResult(result)
@@ -170,6 +179,9 @@ class TrackingService : LifecycleService() {
         }
     }
 
+    /**
+     * This adds the location to the last list of pathPoints.
+     */
     private fun addPathPoint(location: Location?) {
         location?.let {
             val pos = LatLng(location.latitude, location.longitude)
@@ -180,12 +192,17 @@ class TrackingService : LifecycleService() {
         }
     }
 
+    /**
+     * Will add an empty polyline in the pathPoints list or initialize it if empty.
+     */
     private fun addEmptyPolyline() = multiPathPoints.value?.apply {
         add(mutableListOf())
         multiPathPoints.postValue(this)
     } ?: multiPathPoints.postValue(mutableListOf(mutableListOf()))
 
-    //to display time
+    /**
+     * Starts this service as a foreground service and creates the necessary notification
+     */
     private fun startForegroundService() {
         startTimer()
 
@@ -207,9 +224,12 @@ class TrackingService : LifecycleService() {
         })
     }
 
-    //for state pause or resume
+    /**
+     * Updates the action buttons of the notification
+     */
     private fun updateNotificationTrackingState(isTracking: Boolean) {
-        val notificationActionText = if (isTracking) "Pause" else "Resume"
+        val notificationActionText =
+            if (isTracking) getString(R.string.pause) else getString(R.string.resume)
 
         val pendingIntent = if (isTracking) {
             val pauseIntent = Intent(this, TrackingService::class.java).apply {
@@ -241,7 +261,6 @@ class TrackingService : LifecycleService() {
 
             notificationManager.notify(NOTIFICATION_ID, curNotificationBuilder.build())
         }
-
     }
 
 
@@ -255,7 +274,9 @@ class TrackingService : LifecycleService() {
         notificationManager.createNotificationChannel(channel)
     }
 
-
+    /**
+     * Starts the timer for the tracking.
+     */
     private fun startTimer() {
         addEmptyPolyline()
         isTracking.postValue(true)
@@ -277,6 +298,9 @@ class TrackingService : LifecycleService() {
         }
     }
 
+    /**
+     * Stops the service properly.
+     */
     private fun killService() {
         serviceKilled = true
         isFirstRun = true

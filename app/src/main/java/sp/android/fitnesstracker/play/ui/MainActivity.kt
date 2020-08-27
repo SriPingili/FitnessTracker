@@ -48,12 +48,12 @@ class MainActivity : AppCompatActivity() {
             navHostFragmentId.findNavController().navigate(R.id.action_global_settingsFragment)
             return true
         }
-
         return super.onOptionsItemSelected(item)
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
+        //Checks if we launched the activity from the notification
         navigateToTrackingFragmentIfNeeded(intent)
     }
 

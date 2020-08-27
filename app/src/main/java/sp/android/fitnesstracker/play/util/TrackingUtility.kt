@@ -5,10 +5,12 @@ import android.content.Context
 import android.location.Location
 import android.os.Build
 import pub.devrel.easypermissions.EasyPermissions
+import sp.android.fitnesstracker.play.R
 import sp.android.fitnesstracker.play.services.Polyline
 import java.util.concurrent.TimeUnit
 
 object TrackingUtility {
+
     fun hasLocationPermissions(context: Context) =
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             EasyPermissions.hasPermissions(
@@ -64,19 +66,19 @@ object TrackingUtility {
         return distance
     }
 
-    fun getBMIMessage(bmi: Float): String {
+    fun getBMIMessage(bmi: Float, context: Context): String {
         return if (bmi <= 18.5) {
-            "Your BMI is equal to or less than 18.5 (Underweight)\n(source: https://www.bmi-calculator.net)"
-        } else if (bmi > 18.5 && bmi <= 24.99) {
-            "Your BMI is between 18.5-24.9 (Normal Weight)\n(source: https://www.bmi-calculator.net)"
-        } else if (bmi >= 25 && bmi <= 29.99) {
-            "Your BMI is between 25 - 29.9 (Overweight)\n(source: https://www.bmi-calculator.net)"
-        } else if (bmi >= 30 && bmi <= 34.99) {
-            "Your BMI is between 30 - 34.99 (Obese Class 1)\n(source: https://www.bmi-calculator.net)"
-        } else if (bmi >= 35 && bmi <= 39.99) {
-            "Your BMI is between 35 - 39.99 (Obese Class 2)\n(source: https://www.bmi-calculator.net)"
+            context.getString(R.string.bmi_underweight)
+        } else if (bmi in 18.6..24.99) {
+            context.getString(R.string.bmi_normal_weight)
+        } else if (bmi in 25.0..29.99) {
+            context.getString(R.string.bmi_over_weight)
+        } else if (bmi in 30.0..34.99) {
+            context.getString(R.string.bmi_obese_class_one)
+        } else if (bmi in 35.0..39.99) {
+            context.getString(R.string.bmi_obese_class_two)
         } else {
-            "Your BMI is over 40 (Obese Class 3 : Morbid Obesity)\n(source: https://www.bmi-calculator.net)"
+            context.getString(R.string.bmi_obese_class_three)
         }
     }
 }

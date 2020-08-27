@@ -23,14 +23,15 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
 
     @set:Inject
     var firstTimeAppOpen: Boolean = true
+
     @set:Inject
-    var name: String = "Amigos"
+    var name: String = ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         if (!firstTimeAppOpen) {
-            val toolbarText = "Let's go, $name!"
+            val toolbarText = String.format(getString(R.string.lets_go), name)
             requireActivity().tvToolbarTitle.text = toolbarText
 
             val navOptions = NavOptions.Builder()
@@ -48,12 +49,19 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
             if (success) {
                 findNavController().navigate(R.id.action_setupFragment_to_runFragment)
             } else {
-                Snackbar.make(requireView(), getString(R.string.please_enter_all_fields), Snackbar.LENGTH_SHORT)
+                Snackbar.make(
+                    requireView(),
+                    getString(R.string.please_enter_all_fields),
+                    Snackbar.LENGTH_SHORT
+                )
                     .show()
             }
         }
     }
 
+    /**
+     * Saves the name and the weight in shared preferences
+     */
     private fun writePersonalDataToSharedPref(): Boolean {
         val name = ageInputEditText.text.toString()
         val weightText = weightInputEditText.text.toString()
@@ -65,7 +73,7 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
             .putFloat(KEY_WEIGHT, weightText.toFloat())
             .putBoolean(KEY_FIRST_TIME_TOGGLE, false)
             .apply()
-        val toolbarText = "Let's go, $name!"
+        val toolbarText = String.format(getString(R.string.lets_go), name)
         requireActivity().tvToolbarTitle.text = toolbarText
         return true
     }

@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import sp.android.fitnesstracker.play.db.Run
 import sp.android.fitnesstracker.play.repositories.MainRepository
-import sp.android.fitnesstracker.play.util.SortType.SortType
+import sp.android.fitnesstracker.play.util.SortType
 
 class MainViewModel @ViewModelInject constructor(
     val repository: MainRepository

@@ -18,6 +18,9 @@ import sp.android.fitnesstracker.play.util.Constants.RUNNING_DATABASE_NAME
 import sp.android.fitnesstracker.play.util.Constants.SHARED_PREFERENCES_NAME
 import javax.inject.Singleton
 
+/**
+ * AppModule, provides application wide singletons
+ */
 @Module
 @InstallIn(ApplicationComponent::class)
 object AppModule {
@@ -49,7 +52,7 @@ object AppModule {
     @Singleton
     @Provides
     fun provideWeight(sharedPreferences: SharedPreferences) =
-        sharedPreferences.getFloat(KEY_WEIGHT, 175f)
+        sharedPreferences.getFloat(KEY_WEIGHT, 0f)
 
     @Singleton
     @Provides

@@ -15,10 +15,12 @@ import sp.android.fitnesstracker.play.R
 import sp.android.fitnesstracker.play.ui.MainActivity
 import sp.android.fitnesstracker.play.util.Constants
 
+/**
+ * ServiceModule, provides dependencies for the TrackingService
+ */
 @Module
 @InstallIn(ServiceComponent::class)
 class ServiceModule {
-
 
     @ServiceScoped
     @Provides
@@ -47,7 +49,7 @@ class ServiceModule {
         .setAutoCancel(false)
         .setOngoing(true)
         .setSmallIcon(R.drawable.ic_directions_run_black_24dp)
-        .setContentTitle("Running App")
-        .setContentText("00:00:00")
+        .setContentTitle(app.getString(R.string.app_name))
+        .setContentText(app.getString(R.string.init_time))
         .setContentIntent(pendingIntent)
 }

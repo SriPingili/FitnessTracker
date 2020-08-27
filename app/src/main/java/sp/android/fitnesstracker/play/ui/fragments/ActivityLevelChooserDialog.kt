@@ -7,7 +7,6 @@ import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import sp.android.fitnesstracker.play.R
 
-
 class ActivityLevelChooserDialog : DialogFragment() {
     companion object {
         var position: Int = 0

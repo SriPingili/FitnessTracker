@@ -7,7 +7,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import sp.android.fitnesstracker.play.R
 
 class CancelRunDialog : DialogFragment() {
-
     private var yesListener: (() -> Unit)? = null
 
     fun setYesListener(listener: (() -> Unit)) {

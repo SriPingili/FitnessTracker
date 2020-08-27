@@ -7,6 +7,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.utils.MPPointF
 import kotlinx.android.synthetic.main.marker_view.view.*
+import sp.android.fitnesstracker.play.R
 import sp.android.fitnesstracker.play.db.Run
 import sp.android.fitnesstracker.play.util.TrackingUtility
 import java.text.SimpleDateFormat
@@ -18,31 +19,37 @@ import java.util.*
 @SuppressLint("ViewConstructor")
 class CustomMarkerView(
     val runs: List<Run>,
-    c: Context,
+    context: Context,
     layoutId: Int
-) : MarkerView(c, layoutId) {
+) : MarkerView(context, layoutId) {
 
-    override fun refreshContent(e: Entry?, highlight: Highlight?) {
-        if (e == null) {
+    override fun refreshContent(entry: Entry?, highlight: Highlight?) {
+        if (entry == null) {
             return
         }
-        val curRunId = e.x.toInt()
+        val curRunId = entry.x.toInt()
         val run = runs[curRunId]
         val calendar = Calendar.getInstance().apply {
             timeInMillis = run.timestamp
         }
-        val dateFormat = SimpleDateFormat("dd.MM.yy", Locale.getDefault())
-        tvDate.text = "Date: ${dateFormat.format(calendar.time)}"
+        val dateFormat =
+            SimpleDateFormat(context.getString(R.string.data_format), Locale.getDefault())
+        tvDate.text =
+            String.format(context.getString(R.string.date), dateFormat.format(calendar.time))
 
-        "${run.avgSpeedInKMH} km/h".also {
-            tvAvgSpeed.text = "Speed: $it"
+        String.format(context.getString(R.string.total_avg_speed), run.avgSpeedInKMH).also {
+            tvAvgSpeed.text = String.format(context.getString(R.string.speed), it)
         }
-        "${run.distanceInMeters / 1000f} km".also {
-            tvDistance.text = "Distance: $it"
-        }
-        tvDuration.text = "Time: ${TrackingUtility.getFormattedStopWatchTime(run.timeInMillis)}"
-        "${run.caloriesBurned} kcal".also {
-            tvCaloriesBurned.text = "Calories: $it"
+        String.format(context.getString(R.string.total_distance), run.distanceInMeters / 1000f)
+            .also {
+                tvDistance.text = String.format(context.getString(R.string.distance), it)
+            }
+        tvDuration.text = String.format(
+            context.getString(R.string.time),
+            TrackingUtility.getFormattedStopWatchTime(run.timeInMillis)
+        )
+        String.format(context.getString(R.string.total_calories), run.caloriesBurned).also {
+            tvCaloriesBurned.text = String.format(context.getString(R.string.calories), it)
         }
     }
 

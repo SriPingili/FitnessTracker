@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_bmr.*
@@ -20,10 +21,15 @@ import javax.inject.Inject
 
 const val BMR_FRAGMENT_TAG = "CancelDialog"
 
+/*
+*
+* Fragment responsible for calculating BMR based on the info provided
+* by the user
+* */
 @AndroidEntryPoint
 class BMRFragment : Fragment(R.layout.fragment_bmr) {
     @set:Inject
-    var name = "Sri"
+    var name = ""
 
     @Inject
     lateinit var sharedPref: SharedPreferences
@@ -36,7 +42,6 @@ class BMRFragment : Fragment(R.layout.fragment_bmr) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         loadFieldsFromSharedPref()
 
         radioGroupId.setOnCheckedChangeListener { group, checkedId ->
@@ -50,32 +55,19 @@ class BMRFragment : Fragment(R.layout.fragment_bmr) {
             ActivityLevelChooserDialog().apply {
                 setActivityLevelListener {
                     setActivityLevelEnum(it)
-                    displayToast(it)
                 }
             }.show(parentFragmentManager, BMR_FRAGMENT_TAG)
         }
 
-        calculateButtonId.setOnClickListener({
-            calculateBMR()
-        })
-
-
-    }
-
-    private fun calculateBMR() {
-        val success = applyChangesToSharedPref()
-
-        if (success) {
-
-
-        } else {
-            Snackbar.make(
-                requireView(),
-                getString(R.string.please_enter_all_fields),
-                Snackbar.LENGTH_SHORT
-            ).show()
+        calculateButtonId.setOnClickListener {
+            if (!applyChangesToSharedPref()) {
+                Snackbar.make(
+                    requireView(),
+                    getString(R.string.please_enter_all_fields),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
         }
-
     }
 
     private fun setActivityLevelEnum(index: Int) {
@@ -109,10 +101,6 @@ class BMRFragment : Fragment(R.layout.fragment_bmr) {
             getString(R.string.female) -> radioGroupId.check(R.id.femaleRadioButtonId)
         }
         ActivityLevelChooserDialog.position = sharedPref.getInt(KEY_POSITION, 0)
-    }
-
-    fun displayToast(position: Int) {
-        Toast.makeText(requireContext(), "position = $position", Toast.LENGTH_SHORT).show()
     }
 
     private fun applyChangesToSharedPref(): Boolean {
@@ -150,20 +138,21 @@ class BMRFragment : Fragment(R.layout.fragment_bmr) {
         }
 
         if (bmr > 0f) {
-            viewBMRResultId.visibility = View.VISIBLE
-            viewBMRResultId.setText(
-                String.format(
-                    getString(R.string.bmr_result),
-                    name,
-                    bmr.toInt(),
-                    calories.toInt()
+            MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
+                .setTitle(String.format(getString(R.string.dear_user), name))
+                .setMessage(
+                    String.format(
+                        getString(R.string.bmr_result),
+                        bmr.toInt(),
+                        calories.toInt()
+                    )
                 )
-            )
+                .setPositiveButton(getString(android.R.string.ok)) { dialogInterface, _ ->
+                    dialogInterface.cancel()
+                }
+                .create()
+                .show()
         }
-
-        scrollViewId.post(Runnable {
-            scrollViewId.scrollTo(0, scrollViewId.bottom)
-        })
 
         return true
     }

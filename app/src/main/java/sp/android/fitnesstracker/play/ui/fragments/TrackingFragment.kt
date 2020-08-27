@@ -31,9 +31,12 @@ import javax.inject.Inject
 
 const val CANCEL_DIALOG_TAG = "CancelDialog"
 
+/*
+* Fragment responsible for tracking the run. This fragment saves the run to database
+* after the run is finished by the user.
+* */
 @AndroidEntryPoint
 class TrackingFragment : Fragment(R.layout.fragment_tracking) {
-
     private val viewModel: MainViewModel by viewModels()
     private var isTracking = false
     private var multiPathPoints = mutableListOf<Polyline>()
@@ -49,7 +52,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
     where you Inject it
     * */
     @set:Inject
-    private var weight = 175f
+    private var weight = 0f
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -87,6 +90,9 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
         subscribeToObservers()
     }
 
+    /**
+     * Subscribes to changes of LiveData objects
+     */
     private fun subscribeToObservers() {
         TrackingService.isTracking.observe(viewLifecycleOwner, Observer {
             updateTracking(it)
@@ -105,6 +111,9 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
         })
     }
 
+    /**
+     * Toggles the tracking state
+     */
     private fun toggleRun() {
         if (isTracking) {
             menu?.getItem(0)?.isVisible = true
@@ -114,6 +123,9 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
         }
     }
 
+    /**
+     * Updates the tracking variable and the UI accordingly
+     */
     private fun updateTracking(isTracking: Boolean) {
         this.isTracking = isTracking
         if (!isTracking && curTimeInMillis > 0L) {
@@ -126,6 +138,9 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
         }
     }
 
+    /**
+     * Will move the camera to the user's location.
+     */
     private fun moveCameraToUser() {
         if (multiPathPoints.isNotEmpty() && multiPathPoints.last().isNotEmpty()) {
             map?.animateCamera(
@@ -137,6 +152,9 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
         }
     }
 
+    /**
+     * Adds all polylines to the pathPoints list to display them after screen rotations
+     */
     private fun addAllPolylines() {
         for (polyline in multiPathPoints) {
             val polylineOptions = PolylineOptions()
@@ -147,6 +165,9 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
         }
     }
 
+    /**
+     * Draws a polyline between the two latest points.
+     */
     private fun addLatestPolyline() {
         if (multiPathPoints.isNotEmpty() && multiPathPoints.last().size > 1) {
             val preLastLatLng = multiPathPoints.last()[multiPathPoints.last().size - 2]
@@ -175,8 +196,6 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
 
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
-        // just checking for isTracking doesnt trigger this when rotating the device
-        // in paused mode
         if (curTimeInMillis > 0L) {
             this.menu?.getItem(0)?.isVisible = true
         }
@@ -200,6 +219,10 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
         }.show(parentFragmentManager, CANCEL_DIALOG_TAG)
     }
 
+    /**
+     * Zooms out until the whole track is visible. Used to make a screenshot of the
+     * MapView to save it in the database
+     */
     private fun zoomToWholeTrack() {
         val bounds = LatLngBounds.Builder()
         for (polyline in multiPathPoints) {
@@ -219,6 +242,9 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
         )
     }
 
+    /**
+     * Saves the recent run in the Room database and ends it
+     */
     private fun endRunAndSaveToDB() {
         map?.snapshot { bmp ->
             var distanceInMeters = 0

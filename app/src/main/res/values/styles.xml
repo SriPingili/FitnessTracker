@@ -55,13 +55,14 @@
     <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
         <!--https://material.io/develop/android/components/dialogs-->
         <item name="colorSecondary">@android:color/black</item>
+        <item name="colorSurface">@color/md_blue_300</item>
         <item name="colorOnSurface">@android:color/black</item>
         <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialogText</item>
         <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialogBodyText</item>
         <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
         <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
     </style>
-    
+
     <style name="MaterialAlertDialogText" parent="@style/MaterialAlertDialog.MaterialComponents.Title.Text">
         <item name="android:textColor">@android:color/black</item>
     </style>

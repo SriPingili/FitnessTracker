@@ -18,7 +18,7 @@ import javax.inject.Inject
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
     @Inject
     lateinit var sharedPref: SharedPreferences
-/*
+    /*
     this depends on the values we start the app with. But we want to have the up to date values, since they can change during runtime
 
     @set:Inject
@@ -50,7 +50,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     private fun loadFieldsFromSharedPref() {
         val name = sharedPref.getString(KEY_NAME, "")
-        val weight = sharedPref.getFloat(KEY_WEIGHT, 175f)
+        val weight = sharedPref.getFloat(KEY_WEIGHT, 0f)
         nameInputTextView.setText(name)
         weightInputEditText.setText(weight.toString())
     }
@@ -65,7 +65,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             .putString(KEY_NAME, nameText)
             .putFloat(KEY_WEIGHT, weightText.toFloat())
             .apply()
-        val toolbarText = "Let's go, $nameText!"
+        val toolbarText = String.format(getString(R.string.lets_go), nameText)
         requireActivity().tvToolbarTitle.text = toolbarText
         findNavController().navigate(R.id.action_settingsFragment_to_runFragment)
         return true
