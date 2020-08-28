@@ -70,7 +70,7 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/continue_layout_height"
-        android:background="@color/md_blue_A400"
+        android:background="@color/md_yellow_A400"
         android:padding="@dimen/padding_8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

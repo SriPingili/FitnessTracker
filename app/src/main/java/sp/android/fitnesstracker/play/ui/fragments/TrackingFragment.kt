@@ -158,7 +158,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
     private fun addAllPolylines() {
         for (polyline in multiPathPoints) {
             val polylineOptions = PolylineOptions()
-                .color(requireContext().getColor(R.color.md_blue_900))
+                .color(requireContext().getColor(R.color.md_yellow_900))
                 .width(POLYLINE_WIDTH)
                 .addAll(polyline)
             map?.addPolyline(polylineOptions)
@@ -173,7 +173,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
             val preLastLatLng = multiPathPoints.last()[multiPathPoints.last().size - 2]
             val lastLatLng = multiPathPoints.last().last()
             val polylineOptions = PolylineOptions()
-                .color(requireContext().getColor(R.color.md_blue_900))
+                .color(requireContext().getColor(R.color.md_yellow_900))
                 .width(POLYLINE_WIDTH)
                 .add(preLastLatLng)
                 .add(lastLatLng)

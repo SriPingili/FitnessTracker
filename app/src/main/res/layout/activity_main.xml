@@ -66,7 +66,7 @@
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/md_blue_A400"
+        android:background="@color/md_yellow_A400"
         app:menu="@menu/bottom_nav_menu"
         app:itemIconTint="@drawable/bottom_nav_selector"
         app:itemTextColor="@drawable/bottom_nav_selector"
