@@ -37,7 +37,6 @@ Features:
 ### References
 - https://www.bmi-calculator.net
 - https://www.seacoastonline.com/article/20070412/ENTERTAIN/704120346
-- [Philipp Lackner]
 
 [Google Maps SDK]: https://developers.google.com/maps/documentation/android-sdk/get-api-key
 [strings.xml]:https://github.com/srijith1979/FitnessTracker/blob/master/app/src/main/res/values/strings.xml#L10
