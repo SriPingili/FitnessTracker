@@ -7,7 +7,7 @@
         <item>Average Speed</item>
         <item>Calories Burned</item>
     </string-array>
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDsyerfgeRuWsEhRMUiR2tQi6Iqcd-dEVs</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">COPY YOUR GOOGLE API KEY HERE</string>
     <string-array name="actvity_level_choice">
         <item>Sedentary - Little/no exercise</item>
         <item>Lightly active - Light exercise/sports 1-3 days/week</item>
